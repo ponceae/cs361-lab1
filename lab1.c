@@ -11,6 +11,7 @@
   #include <stdlib.h>
   #include <stdbool.h>
   #include <errno.h>
+  #include <string.h>
   
 struct item6 {
 	uint32_t member1;
@@ -24,19 +25,19 @@ int main (int argc, char **argv)
 {
 	char* filename;
 	if (argc != 2) {
-		//FIX
 		printf("Invalid number of arguments!\n");
 		return EXIT_FAILURE;
 	} else {
 		filename = argv[1];
 	}
 	//check if file is valid
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-		//FIX ERROR CHECKING
-		//printf("Opening file filename failed: %s\n", strerror(errno));
+    FILE *file;
+    if (!fopen(filename, "rw")) {
+		printf("Opening file \"%s\" failed: %s\n", filename, strerror(errno));
 		return EXIT_FAILURE;
-    }
+    } else {
+		file = fopen(filename, "rw");
+	}
 	uint32_t item1;
 	fseek(file, 32, SEEK_SET);
 	fread(&item1, sizeof(uint32_t), 1, file);
@@ -76,7 +77,14 @@ int main (int argc, char **argv)
 	
 	
 	//write to file part
+	fseek(file, 16, SEEK_END);
+	char *str = "CS361";
+	for (int i = 0; i < 7; i++) {
+		printf("%c", str[i]);
+		fwrite(str, sizeof(char), sizeof(str), file);
+	}
 
+	fclose(file);
 
 
 	
