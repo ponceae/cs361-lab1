@@ -14,7 +14,7 @@
   #include <string.h>
   
 /*
- * Declare struct for reading 
+ * Declare whole struct for reading from file
  */
 struct item6 {
 	uint32_t member1;
@@ -25,7 +25,7 @@ struct item6 {
 };
  
 /*
- * Extracts data contents from a file and displays it.
+ * Extracts binary data contents from a file and displays it.
  */
 int main (int argc, char **argv)
 {
@@ -47,6 +47,7 @@ int main (int argc, char **argv)
 		printf("Opening file \"%s\" failed: %s\n", filename, strerror(errno));
 		return EXIT_FAILURE;
     } else {
+		// if valid, open file for reading
 		file = fopen(filename, "a+");
 	}
 	    
@@ -74,7 +75,7 @@ int main (int argc, char **argv)
 	fread(&item4, sizeof(int32_t), 1, file);
 	printf("Item 4:\n\tDecimal: %d\n\tHex: 0x%x\n", item4, item4);
 	
-	// at byte offset 1234 in the file, there is a C string,
+	// at byte offset 1234 in the file, there is a string,
 	// no longer than 256 characters.
 	char item5[255];
 	fseek(file, 1234, SEEK_SET);
@@ -85,6 +86,9 @@ int main (int argc, char **argv)
 	struct item6 item6;
 	fseek(file, 2573, SEEK_SET);
 	fread(&item6, sizeof(struct item6), 1, file);
+	
+	// extract contents of struct
+	
 	// an unsigned 4-byte number
 	printf("Item 6:\n\tMember 1: %i\n", item6.member1);
 	// an unsigned 2-byte number
@@ -112,7 +116,7 @@ int main (int argc, char **argv)
 	fread(&item8, sizeof(uint32_t), 1, file);
 	printf("Item 8:\n\tDecimal: %i\n\tHex: 0x%x\n", item8, item8);
 	
-	//write "CS361" (no zero byte at the end) at 16 bytes beyond EOF
+	// write "CS361" (no zero byte at the end) at 16 bytes beyond EOF
 	fseek(file, 16, SEEK_END);
 	char *str = "CS361";
 	fwrite(str, 1, strnlen(str, 5), file);
