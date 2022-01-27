@@ -37,38 +37,21 @@ int main (int argc, char **argv)
 	if (argc != 2) {
 		printf("Invalid number of arguments!\n");
 		return EXIT_FAILURE;
-<<<<<<< HEAD
 	} else {
+		// extract filename
 		filename = argv[1];
 	}
 	//check if file is valid
     FILE *file;
-    if (!fopen(filename, "rw")) {
+    if (!fopen(filename, "r")) {
 		printf("Opening file \"%s\" failed: %s\n", filename, strerror(errno));
 		return EXIT_FAILURE;
     } else {
-		file = fopen(filename, "rw");
+		file = fopen(filename, "a+");
 	}
-	uint32_t item1;
-=======
-	} 
-	
-	// extract filename
-	filename = argv[1];
-	
-	// validate file
-	FILE *file;
-	if (!fopen(filename, "r")) {
-		// output system error message
-		printf("Error opening file '%s': %s\n", filename, strerror(errno));
-		return EXIT_FAILURE;
-	} 
-	
-	file = fopen(filename, "r");
-    
+	    
 	// at byte offset 32 in the file, there is an unsigned 4-byte number
     uint32_t item1;
->>>>>>> refs/remotes/origin/main
 	fseek(file, 32, SEEK_SET);
 	fread(&item1, sizeof(uint32_t), 1, file);
 	printf("Item 1:\n\tDecimal: %i\n\tHex: 0x%x\n", item1, item1);
@@ -129,54 +112,10 @@ int main (int argc, char **argv)
 	fread(&item8, sizeof(uint32_t), 1, file);
 	printf("Item 8:\n\tDecimal: %i\n\tHex: 0x%x\n", item8, item8);
 	
-	// write to file part
-	
-<<<<<<< HEAD
-	//write to file part
+	//write "CS361" (no zero byte at the end) at 16 bytes beyond EOF
 	fseek(file, 16, SEEK_END);
 	char *str = "CS361";
-	for (int i = 0; i < 7; i++) {
-		printf("%c", str[i]);
-		fwrite(str, sizeof(char), sizeof(str), file);
-	}
-
+	fwrite(str, 1, strnlen(str, 5), file);
 	fclose(file);
-
-
-	
-
-
-	
-
-	
-
-	
-
-	
-	
-	
-
-	
-
-	
-	
-
-	
-
-
-
-
-	
-
-
-	
-	
-	
-=======
-	// your program needs to write the characters "CS361" 
-	// (no zero byte at the end), starting 16 bytes beyond the end of the file
->>>>>>> refs/remotes/origin/main
-		
-	//printf("Item %d", item.itemnumber);
 }
 
