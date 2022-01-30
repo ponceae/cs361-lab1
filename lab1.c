@@ -13,9 +13,8 @@
 #include <errno.h>
 #include <string.h>
 
-/*
- * Declare struct for reading
- */
+ // declare whole struct for reading from file
+
 struct item6 {
     uint32_t member1;
     uint16_t member2;
@@ -24,9 +23,7 @@ struct item6 {
     void* member5;
 };
 
-/*
- * Extracts data contents from a file and displays it.
- */
+ // extracts binary data contents from a file and displays it.
 int main (int argc, char **argv)
 {
 
@@ -117,6 +114,5 @@ int main (int argc, char **argv)
     char *str = "CS361";
     fwrite(str, 1, strnlen(str, 5), file);
     fclose(file);
-
 }
 
